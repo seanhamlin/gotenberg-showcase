@@ -1,0 +1,57 @@
+version: '2.3'
+
+x-volumes:
+  &default-volumes
+  # Define all volumes you would like to have real-time mounted into the docker containers
+  volumes:
+    - .:/app:delegated # Local overrides to mount host filesystem. Automatically removed in CI and PROD.
+
+x-environment:
+  &default-environment
+  # Route that should be used locally, if you are using pygmy, this route *must* end with .docker.amazee.io
+  LAGOON_ROUTE: &default-url http://${COMPOSE_PROJECT_NAME:-gotenberg}.docker.amazee.io
+  # Uncomment if you like to have the system behave like in production
+  #LAGOON_ENVIRONMENT_TYPE: production
+
+x-user:
+  &default-user
+  # The default user under which the containers should run. Change this if you are on linux and run with another user than id `1000`
+  user: '1000'
+
+volumes:
+  files:
+    {}
+
+services:
+
+  node:
+    networks:
+      - amazeeio-network
+      - default
+    build:
+      context: .
+      dockerfile: node.dockerfile
+    labels:
+      lagoon.type: node
+      lando.type: node
+    volumes:
+      - .:/app:delegated
+    environment:
+      << : *default-environment # loads the defined environment variables from the top
+      LAGOON_LOCALDEV_URL: *default-url
+      LAGOON_LOCALDEV_HTTP_PORT: 3000
+      url: *default-url
+
+  gotenberg:
+    image: gotenberg/gotenberg:8
+    ports:
+      - "3000" # Find port on host with `docker-compose port gotenberg 3000`
+    labels:
+      lagoon.type: basic
+      lando.type: basic
+    environment:
+      << : *default-environment # loads the defined environment variables from the top
+
+networks:
+  amazeeio-network:
+    external: true

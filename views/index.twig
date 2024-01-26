@@ -1,0 +1,11 @@
+{% extends 'layout.twig' %}
+
+{% block body %}
+  <h1>{{title}}</h1>
+  <p>Welcome to a simple demo that showcases <a href="https://gotenberg.dev/" target="_blank">Gotenberg</a>.</p>
+  <form action="/pdf" method="post">
+    <label for="url">Enter any valid URL to turn it into a PDF:</label>
+    <input type="url" name="url" maxlength="128" placeholder="https://www.google.com/" pattern="https://.*" size="40" required>
+    <input type="submit" name="submit">
+  </form>
+{% endblock %}
