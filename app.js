@@ -12,6 +12,9 @@ const rateLimit = require('express-rate-limit');
 
 const app = express();
 
+// Reverse proxies.
+app.set('trust proxy', ['loopback', 'linklocal', 'uniquelocal']);
+
 // Rate limiter to prevent abuse.
 const limiter = rateLimit({
   windowMs: 10 * 60 * 1000, // 10 minutes
