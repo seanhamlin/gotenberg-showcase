@@ -1,9 +1,1 @@
 docker-compose-yaml: docker-compose.yml
-
-# Disable auto-generated route for gotenberg, and rely on the internal service.
-environments:
-  master:
-    routes:
-      - gotenberg:
-          autogenerate:
-            enabled: false
