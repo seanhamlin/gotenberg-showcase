@@ -47,8 +47,8 @@ services:
     ports:
       - "3000" # Find port on host with `docker-compose port gotenberg 3000`
     labels:
-      lagoon.type: worker
-      lando.type: worker
+      lagoon.type: basic
+      lando.type: basic
     environment:
       << : *default-environment # loads the defined environment variables from the top
 
