@@ -30,7 +30,10 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'twig');
 
-app.use(logger('dev'));
+// Custom logger to log the PDF URL.
+logger.token('pdf-url', function (req, res) { return req.body.url })
+app.use(logger(":remote-addr :method :url HTTP/:http-version :status :res[content-length] - :response-time ms - :pdf-url"));
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
