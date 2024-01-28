@@ -12,16 +12,16 @@ const rateLimit = require('express-rate-limit');
 
 const app = express();
 
-// Rate limiter.
+// Rate limiter to prevent abuse.
 const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  limit: 200,
+  windowMs: 10 * 60 * 1000, // 10 minutes
+  limit: 10,
   standardHeaders: 'draft-7', // draft-6: `RateLimit-*` headers; draft-7: combined `RateLimit` header
   legacyHeaders: false // Disable the `X-RateLimit-*` headers.
 });
 
-// Apply the rate limiting middleware to all requests.
-app.use(limiter);
+// Apply the rate limiting middleware to just the PDF requests.
+app.use('/pdf', limiter);
 
 // Parse POST bodies.
 app.use(bodyParser.urlencoded({ extended: true }));
