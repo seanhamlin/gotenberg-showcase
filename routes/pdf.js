@@ -8,7 +8,12 @@ router.post('/', async function (req, res, next) {
 
   // Basic validation on the URL.
   if (!validUrl.isUri(req.body.url)) {
-    return res.status(406).send('invalid URL');
+    return res.status(406).send('Invalid URL');
+  }
+
+  // Block internal paths.
+  if (req.body.url.includes(".local")) {
+    return res.status(406).send('Invalid URL');
   }
 
   // @see https://github.com/yumauri/gotenberg-js-client/issues/32#issuecomment-1057986328
